@@ -10,44 +10,11 @@ Instead of a rigid `Plan -> Build -> Review` waterfall, a lightweight central **
 
 ### 4-Tier Auto-Routing
 
-```text
-User Request (auto-classified, no explicit "orchestrate" keyword needed)
- |
- +-- Tier 0: Pure Q&A / Code Explanation (no edits)
- |    +--> Director answers directly (read-only Opus 5.5 scout if heavy codebase reading is needed)
- |
- +-- Tier 1: Micro 1-Spot Edit (single number, constant, typo, or config value)
- |    +--> Do NOT edit or delegate -> give exact file:line + before/after snippet for user self-edit
- |
- +-- Tier 2: Small Scoped Task (1-2 files/function, clear bug, standalone docs or visual)
- |    +--> Skip Design & Review -> dispatch 1 specialist with 7-field BRIEF + quick PM verification
- |         (escalates immediately to Tier 3 if hidden structural complexity surfaces)
- |
- +-- Tier 3: Non-Trivial / Large Task (feature, multi-module change, refactor, complex bug)
-      +--> Dynamic Director-driven routing loop (max 3 error-fix cycles)
-```
+![4-Tier Auto-Routing](./assets/auto-routing.png)
 
 ### Hub-and-Spoke Dynamic Routing (Option A)
 
-```text
-                        +--------------------------------------------------+
-                        v                                                  |
-                Director / PM [Gemini 4 Neon · high]                       |
-         Evaluates every result and dynamically selects next step          |
-       +------------+------------+------------+------------+               |
-       v            v            v            v            v               |
-  Scout/Design   Builder       Docs        Visual    Verify & Review       |
-  [Opus 5.5 hi] [Opus 5.5 hi] [Hydro med] [Img/Sol]  [PM + Astra xhigh]    |
-       +------------+------------+------------+------------+               |
-                    | Report result -> Director re-evaluates --------------+
-                    |
-      +-------------+----------------------+
-      v             v                      v
-  Pass / Done   Error / Rejection    > 3 Fix Cycles (Circuit Breaker)
-  (Sync docs/   Fix Cycle 1->2->3    Hard stop immediately
-   visuals if   (Failing Test First) Report summary, root cause,
-   needed)      (Dynamic pivot)      state, and 2-3 options to user
-```
+![Hub-and-Spoke Dynamic Routing](./assets/dynamic-routing.png)
 
 ---
 
@@ -114,6 +81,9 @@ Oh-My-Orchestration/
 ├── README.md
 ├── LICENSE
 ├── install.sh                          # Installs SKILL.md into ~/.gemini/config/skills/
+├── assets/
+│   ├── auto-routing.png
+│   └── dynamic-routing.png
 ├── skills/
 │   └── my-orchestration/
 │       └── SKILL.md                    # Compact 70-line auto-activating skill definition
