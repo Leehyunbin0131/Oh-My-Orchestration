@@ -35,7 +35,7 @@ Instead of a rigid `Plan -> Build -> Review` waterfall, a lightweight central **
 ## Key Engineering Disciplines
 
 - **Mandatory 7-Field Handoff `BRIEF`**: Every child delegate starts with zero parent history. All briefs specify `BRIEF FOR`, `ROLE`, `GOAL`, `CONTEXT`, `DONE WHEN` (an executable exit-0 command or objective checklist — never an opinion), `DO NOT`, and `RETURN`. See [`templates/BRIEF.md`](./templates/BRIEF.md).
-- **Direct PM Docs (Clean Separation of Concerns)**: The Director/PM (`Gemini 4 Neon`) owns user-facing documentation directly without spawning a separate copywriter model. Formatting and prose-polishing rules stay decoupled in your own independent skills (such as Markdown/CommonMark or localization/humanizer skills) rather than being hardcoded into the orchestration skill.
+- **Direct PM Docs (Clean Separation of Concerns)**: The Director/PM (`Gemini 4 Neon`) owns user-facing documentation directly without spawning a separate copywriter model. Documentation rules live cleanly in the optional [`skills/write-docs/SKILL.md`](./skills/write-docs/SKILL.md) skill rather than being coupled into `my-orchestration`.
 - **Failing Test First**: When fixing testable bugs or `[Critical]`/`[Major]` review findings, builders write a failing regression test reproducing the issue *before* writing the fix.
 - **Adversarial Playtester Checklist**: `GPT 6.2 Astra` audits both **code and test quality** against empty/null inputs, huge boundaries, concurrency/race conditions, slow/failing I/O, Unicode/non-ASCII strings, auth/permission edge cases, and blueprint drift.
 - **Hard Circuit Breakers**:
@@ -47,6 +47,16 @@ Instead of a rigid `Plan -> Build -> Review` waterfall, a lightweight central **
 
 ---
 
+## Optional Companion Skill: `write-docs`
+
+[`skills/write-docs/SKILL.md`](./skills/write-docs/SKILL.md) is bundled as an **opt-in** skill decoupled from `my-orchestration`. It defines a 3-stage documentation pipeline (`Draft -> Format -> Polish`) for standalone or orchestrated docs tasks:
+
+1. **Formal Korean Register & Drafting**: Defaults to formal declarative Korean suited for official documents, reports, technical manuals, and presentations (avoiding casual spoken phrasing and register drift), fact-based with zero hype, and `CHANGELOG.md` entries <= 3 lines.
+2. **Markdown Formatting (`make-md`)**: Uses an installed `make-md` skill (CommonMark 0.31.2) when available, with a built-in CommonMark fallback.
+3. **Korean Prose Polishing (`humanize-korean`)**: Optionally pairs with [`epoko77-ai/im-not-ai`](https://github.com/epoko77-ai/im-not-ai) (`humanize-korean` / `humanize-scan`) while locking formal register so AI translationese is removed without downgrading formal wording into casual speech.
+
+---
+
 ## Installation
 
 ### Global Install (Antigravity / T3 Code)
@@ -54,22 +64,28 @@ Instead of a rigid `Plan -> Build -> Review` waterfall, a lightweight central **
 ```bash
 git clone https://github.com/Leehyunbin0131/Oh-My-Orchestration.git
 cd Oh-My-Orchestration
-./install.sh
+
+./install.sh              # Core my-orchestration only (zero dependencies)
+./install.sh --with-docs  # Core my-orchestration + optional write-docs (alias: --all)
+./install.sh --docs-only  # Optional write-docs only
 ```
 
-This installs `skills/my-orchestration/SKILL.md` into:
+Installed paths:
 
 ```text
 ~/.gemini/config/skills/my-orchestration/SKILL.md
+~/.gemini/config/skills/write-docs/SKILL.md        # when --with-docs / --all / --docs-only is used
 ```
 
 ### Project-Local Install
 
-Copy the skill folder directly into your repository's `.agents/skills/` directory:
+Copy the desired skill folder(s) directly into your repository's `.agents/skills/` directory:
 
 ```bash
 mkdir -p .agents/skills
 cp -r skills/my-orchestration .agents/skills/
+# Optional:
+cp -r skills/write-docs .agents/skills/
 ```
 
 ---
@@ -80,13 +96,15 @@ cp -r skills/my-orchestration .agents/skills/
 Oh-My-Orchestration/
 ├── README.md
 ├── LICENSE
-├── install.sh                          # Installs SKILL.md into ~/.gemini/config/skills/
+├── install.sh                          # Installs core skill (--with-docs / --all for write-docs)
 ├── assets/
 │   ├── auto-routing.png
 │   └── dynamic-routing.png
 ├── skills/
-│   └── my-orchestration/
-│       └── SKILL.md                    # Compact 71-line zero-dependency orchestration skill
+│   ├── my-orchestration/
+│   │   └── SKILL.md                    # Compact 71-line zero-dependency orchestration skill
+│   └── write-docs/
+│       └── SKILL.md                    # Optional decoupled documentation workflow skill
 └── templates/
     └── BRIEF.md                        # Reusable 7-field handoff brief templates by role
 ```
@@ -96,7 +114,7 @@ Oh-My-Orchestration/
 ## Customization
 
 - **Swap models/providers**: Edit Section 1 (`Roster`) in [`skills/my-orchestration/SKILL.md`](./skills/my-orchestration/SKILL.md) (for example, switching Architect to `claude-fable-5-2` when available).
-- **Pair with independent writing skills**: Keep orchestration pure and install separate skills for Markdown formatting or prose polishing (e.g., CommonMark rules or Korean humanizers) as needed.
+- **Customize documentation style**: Edit [`skills/write-docs/SKILL.md`](./skills/write-docs/SKILL.md) independently without touching orchestration rules.
 - **Change user-facing language**: Edit Section 6 (`Operations, Language & Overrides`) in `SKILL.md` if you prefer English or another language for user replies and documentation.
 - **Per-thread overrides**: Simply tell the Director in chat (e.g., *"use Tier 3 for this"* or *"use `xhigh` for the builder"*); per-thread overrides work without modifying `SKILL.md`.
 
