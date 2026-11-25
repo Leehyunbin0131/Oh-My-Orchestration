@@ -1,8 +1,8 @@
 # Oh-My-Orchestration
 
-A compact, production-tested **dynamic multi-model orchestration skill** for **T3 Code** and **Antigravity**.
+A compact, zero-dependency **dynamic multi-model orchestration skill** for **T3 Code** and **Antigravity**.
 
-Instead of a rigid `Plan -> Build -> Review` waterfall, a lightweight central **Director/PM** classifies every incoming request across 4 tiers, dynamically routes engineering & visual work to specialized frontier models across providers, handles user-facing documentation directly with the `im-not-ai` (`humanize-korean`) skill, enforces command-verified handoffs and cross-family adversarial reviews, and halts cleanly at a hard **3-cycle circuit breaker**.
+Instead of a rigid `Plan -> Build -> Review` waterfall, a lightweight central **Director/PM** classifies every incoming request across 4 tiers, dynamically routes engineering and visual work to specialized frontier models across providers, handles user-facing documentation directly, enforces command-verified handoffs and cross-family adversarial reviews, and halts cleanly at a hard **3-cycle circuit breaker**.
 
 ---
 
@@ -22,7 +22,7 @@ Instead of a rigid `Plan -> Build -> Review` waterfall, a lightweight central **
 
 | Role | Provider | Model | Options | Scope |
 | :--- | :--- | :--- | :--- | :--- |
-| **Director / PM & Docs** | Main thread (`antigravity`) | `Gemini 4 Neon` | `{"thought_level": "high"}` | Routing, 7-field briefs, verification, fix-cycle cap, reporting, and direct docs/copywriting (`docs/`, `README.md`, `CHANGELOG.md`, UI/i18n) polished with `im-not-ai` (`humanize-korean`) |
+| **Director / PM & Docs** | Main thread (`antigravity`) | `Gemini 4 Neon` | `{"thought_level": "high"}` | Routing, 7-field briefs, verification, fix-cycle cap, reporting, and direct docs/copywriting (`docs/`, `README.md`, `CHANGELOG.md`, UI/i18n) |
 | **Architect / Scout** | `claudeAgent` | `claude-opus-5-5` | `{"effort": "high"}` | Read-only scouting, architecture blueprints, mid-flight design pivots |
 | **Code Worker / Builder** | `claudeAgent` | `claude-opus-5-5` | `{"effort": "high"}` | Tier 2 edits, Tier 3 parallel/worktree slices, failing-test-first fixes |
 | **Visual / Asset Designer** | Native / `codex` | `image-generator` / `gpt-6.2-sol` | `--` / `{"reasoningEffort": "medium"}` | Raster art/icons/banners (`image-generator`); charts/SVG/GIF scripts (`gpt-6.2-sol`) |
@@ -35,7 +35,7 @@ Instead of a rigid `Plan -> Build -> Review` waterfall, a lightweight central **
 ## Key Engineering Disciplines
 
 - **Mandatory 7-Field Handoff `BRIEF`**: Every child delegate starts with zero parent history. All briefs specify `BRIEF FOR`, `ROLE`, `GOAL`, `CONTEXT`, `DONE WHEN` (an executable exit-0 command or objective checklist — never an opinion), `DO NOT`, and `RETURN`. See [`templates/BRIEF.md`](./templates/BRIEF.md).
-- **Direct PM Docs (CommonMark + [`im-not-ai`](https://github.com/epoko77-ai/im-not-ai))**: Instead of spawning a separate copywriter model, the Director/PM (`Gemini 4 Neon`) writes user-facing documentation (`docs/`, `README.md`, `CHANGELOG.md`, UI/i18n) directly following **CommonMark** rules by default, and runs Korean deliverables through the required [`im-not-ai`](https://github.com/epoko77-ai/im-not-ai) (`humanize-korean` / `humanize-scan`) skill to eliminate AI-isms and translationese.
+- **Direct PM Docs (Clean Separation of Concerns)**: The Director/PM (`Gemini 4 Neon`) owns user-facing documentation directly without spawning a separate copywriter model. Formatting and prose-polishing rules stay decoupled in your own independent skills (such as Markdown/CommonMark or localization/humanizer skills) rather than being hardcoded into the orchestration skill.
 - **Failing Test First**: When fixing testable bugs or `[Critical]`/`[Major]` review findings, builders write a failing regression test reproducing the issue *before* writing the fix.
 - **Adversarial Playtester Checklist**: `GPT 6.2 Astra` audits both **code and test quality** against empty/null inputs, huge boundaries, concurrency/race conditions, slow/failing I/O, Unicode/non-ASCII strings, auth/permission edge cases, and blueprint drift.
 - **Hard Circuit Breakers**:
@@ -43,43 +43,7 @@ Instead of a rigid `Plan -> Build -> Review` waterfall, a lightweight central **
   - **Sensitive-File Lock**: `.env*`, DB `migrations`, and CI/deploy configs cannot be edited without explicit human approval.
   - **Autonomous Handoff Cap**: Max 4 unattended agent-to-agent handoffs without checking in with the user.
 - **Worktree & Resource Hygiene**: At most 1 writer on the main checkout for overlapping paths; use `isolation: "worktree"` for large independent parallel features and keep concurrent builders lean (<= 2–3) to avoid MCP/RAM bloat.
-- **Language Separation**: All internal briefs, blueprints, reports, and reviews stay strictly in concise English for token efficiency and technical precision; user-facing replies and Korean docs default to natural, humanized Korean (easily customizable in `SKILL.md`).
-
----
-
-## Prerequisites
-
-### Required Companion Skill: `im-not-ai` (`humanize-korean`)
-
-This preset relies on **[epoko77-ai/im-not-ai](https://github.com/epoko77-ai/im-not-ai)** so the Director/PM (`Gemini 4 Neon`) can polish Korean documentation (`docs/`, `README.md`, `CHANGELOG.md`, UI copy) and eliminate AI-isms and translationese. **Install `im-not-ai` before using Korean docs workflows:**
-
-#### 1. Clone & Install for Antigravity / T3 Code (Recommended)
-
-```bash
-git clone https://github.com/epoko77-ai/im-not-ai.git ~/.local/share/im-not-ai
-cd ~/.local/share/im-not-ai
-./install.sh   # Auto-detects Claude Code, Codex CLI, and Gemini CLI
-
-# Link skills into Antigravity's global skills directory
-mkdir -p ~/.gemini/config/skills
-for s in humanize humanize-korean humanize-redo humanize-scan; do
-  ln -sfn ~/.local/share/im-not-ai/skills/"$s" ~/.gemini/config/skills/"$s"
-done
-```
-
-#### 2. Alternative Install Methods
-
-- **Gemini CLI Extension (no clone)**:
-  ```bash
-  gemini extensions install https://github.com/epoko77-ai/im-not-ai.git
-  ```
-- **Claude Code Plugin Marketplace (no clone)**:
-  ```text
-  /plugin marketplace add epoko77-ai/im-not-ai
-  /plugin install humanize-korean@im-not-ai
-  ```
-
-For full details, updates, and uninstall options, see the upstream [`im-not-ai` repository](https://github.com/epoko77-ai/im-not-ai).
+- **Language Separation**: All internal briefs, blueprints, reports, and reviews stay strictly in concise English for token efficiency and technical precision; user-facing replies and docs default to natural Korean (easily customizable in `SKILL.md`).
 
 ---
 
@@ -122,7 +86,7 @@ Oh-My-Orchestration/
 │   └── dynamic-routing.png
 ├── skills/
 │   └── my-orchestration/
-│       └── SKILL.md                    # Compact 72-line auto-activating skill definition
+│       └── SKILL.md                    # Compact 71-line zero-dependency orchestration skill
 └── templates/
     └── BRIEF.md                        # Reusable 7-field handoff brief templates by role
 ```
@@ -132,6 +96,7 @@ Oh-My-Orchestration/
 ## Customization
 
 - **Swap models/providers**: Edit Section 1 (`Roster`) in [`skills/my-orchestration/SKILL.md`](./skills/my-orchestration/SKILL.md) (for example, switching Architect to `claude-fable-5-2` when available).
+- **Pair with independent writing skills**: Keep orchestration pure and install separate skills for Markdown formatting or prose polishing (e.g., CommonMark rules or Korean humanizers) as needed.
 - **Change user-facing language**: Edit Section 6 (`Operations, Language & Overrides`) in `SKILL.md` if you prefer English or another language for user replies and documentation.
 - **Per-thread overrides**: Simply tell the Director in chat (e.g., *"use Tier 3 for this"* or *"use `xhigh` for the builder"*); per-thread overrides work without modifying `SKILL.md`.
 

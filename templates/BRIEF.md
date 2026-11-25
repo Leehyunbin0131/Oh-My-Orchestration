@@ -2,7 +2,7 @@
 
 Child delegates in T3 Code start with **zero parent conversation history**. Use these English templates verbatim when invoking `delegate_task`.
 
-> **Note on Documentation**: User-facing docs (`docs/`, `README.md`, `CHANGELOG.md`, UI/i18n) are written directly by the Director/PM (`Gemini 4 Neon · high`) using the installed `im-not-ai` (`humanize-korean`) skill for Korean prose — no separate docs delegate is needed.
+> **Note on Documentation**: User-facing docs (`docs/`, `README.md`, `CHANGELOG.md`, UI/i18n) are handled directly by the Director/PM (`Gemini 4 Neon · high`) — no separate docs delegate is needed.
 
 ---
 
