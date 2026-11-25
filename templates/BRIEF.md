@@ -2,6 +2,8 @@
 
 Child delegates in T3 Code start with **zero parent conversation history**. Use these English templates verbatim when invoking `delegate_task`.
 
+> **Note on Documentation**: User-facing docs (`docs/`, `README.md`, `CHANGELOG.md`, UI/i18n) are written directly by the Director/PM (`Gemini 4 Neon · high`) using the installed `im-not-ai` (`humanize-korean`) skill for Korean prose — no separate docs delegate is needed.
+
 ---
 
 ## 1. Architect / Scout (`claudeAgent` / `claude-opus-5-5`, `effort: high`, read-only)
@@ -46,20 +48,4 @@ DONE WHEN: Checked empty/null input, huge/boundary input, concurrency/race condi
 DO NOT:    Edit or fix any files (report only), or spawn subagents.
 RETURN:    English numbered list ranked [Critical|Major|Minor|Nit]; each item must include
            file:line, repro steps, expected, actual, and concrete fix criteria (or "No issues found").
-```
-
----
-
-## 4. Docs / Copywriter (`antigravity` / `gemini-4-hydrogen`, `thought_level: medium`)
-
-```text
-BRIEF FOR: antigravity / gemini-4-hydrogen (thought_level: medium)
-ROLE:      copywriter
-GOAL:      Update user-facing documentation and UI copy for <feature/change>.
-CONTEXT:   <final diff summary, user-visible API/CLI/UI changes>
-DONE WHEN: Every new user-facing feature/string has clear Korean copy; CHANGELOG entry is <= 3 lines
-           explaining what changed and why it matters to the user.
-DO NOT:    Touch anything outside docs/, README.md, CHANGELOG.md, and designated UI/i18n files;
-           do not use jargon or hype; do not spawn subagents.
-RETURN:    English summary of edited files and the final changelog entry.
 ```

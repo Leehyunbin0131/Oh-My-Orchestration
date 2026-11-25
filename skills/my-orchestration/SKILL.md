@@ -5,21 +5,21 @@ description: >-
   engineering task (even without mentioning orchestration) and explicit orchestration
   requests. Enforces 4-tier auto-routing, dynamic Director-driven control, 7-field BRIEF
   handoffs (command-based DONE WHEN), failing-test-first fixes, sensitive-file locks,
-  max 3 fix cycles, optional worktree isolation, and the Dream Team roster (Gemini 4
-  Neon high PM, Claude Opus 5.5 high design/code, Gemini 4 Hydrogen medium docs,
-  image-generator/GPT 6.2 Sol medium visuals, GPT 6.2 Astra xhigh adversarial review).
+  max 3 fix cycles, optional worktree isolation, direct PM docs with the im-not-ai
+  (humanize-korean) skill, and the Dream Team roster (Gemini 4 Neon high PM & docs,
+  Claude Opus 5.5 high design/code, image-generator/GPT 6.2 Sol medium visuals,
+  GPT 6.2 Astra xhigh adversarial review).
 ---
 
 # My T3 Code Orchestration Preset (Dynamic Director-Driven)
 
-Hub-and-spoke control (Option A): main thread (`Gemini 4 Neon`, `thought_level: high`) acts as active **Director/PM** controlling all `delegate_task` calls. Children NEVER spawn subagents. Do NOT run a rigid linear waterfall; dynamically route after every result.
+Hub-and-spoke control (Option A): main thread (`Gemini 4 Neon`, `thought_level: high`) acts as active **Director/PM & Docs Writer** controlling all `delegate_task` calls and writing documentation directly. Children NEVER spawn subagents. Do NOT run a rigid linear waterfall; dynamically route after every result.
 
 ## 1. Roster (Exact IDs & Options)
 
-- **Director/PM** (main, direct): `Gemini 4 Neon` (`{"thought_level":"high"}`) — Korean Q&A, routing, 7-field briefs, verification, fix-cycle cap, reporting.
+- **Director/PM & Docs** (main, direct): `Gemini 4 Neon` (`{"thought_level":"high"}`) — Korean Q&A, routing, 7-field briefs, verification, fix-cycle cap, reporting, and direct documentation/copywriting (`docs/`, `README.md`, `CHANGELOG.md`, UI/i18n) polished with the `im-not-ai` (`humanize-korean`) skill.
 - **Architect/Scout** (read-only): `claudeAgent` / `claude-opus-5-5` / `{"effort":"high"}` — codebase scouting, blueprints, design pivots.
 - **Builder/Code Worker**: `claudeAgent` / `claude-opus-5-5` / `{"effort":"high"}` — Tier 2 edits, Tier 3 parallel/worktree slices, failing-test-first fixes.
-- **Docs/Copywriter**: `antigravity` / `gemini-4-hydrogen` / `{"thought_level":"medium"}` — Korean docs (`docs/`, `README.md`, `CHANGELOG.md`, designated UI/i18n ONLY).
 - **Visual/Asset**: native `invoke_subagent` (`image-generator`) for raster art/icons/banners; `codex` / `gpt-6.2-sol` / `{"reasoningEffort":"medium"}` for code-generated charts/diagrams/SVG/GIF scripts.
 - **Playtester/Senior Reviewer** (read-only): `codex` / `gpt-6.2-astra` / `{"reasoningEffort":"xhigh"}` — adversarial cross-provider playtesting, bug & test-quality review.
 
@@ -27,7 +27,10 @@ Hub-and-spoke control (Option A): main thread (`Gemini 4 Neon`, `thought_level: 
 
 - **Tier 0 (Pure Q&A / explanation, no edits)**: Answer directly. Offload heavy codebase reading to a read-only `claude-opus-5-5` scout.
 - **Tier 1 (Micro 1-spot edit: single number/constant/typo/config value)**: Do NOT edit or delegate (unless user explicitly asks you to apply it). Give exact clickable file:line + before/after snippet for user self-edit.
-- **Tier 2 (Small scoped task: 1-2 files/function, clear bug, standalone docs/visual)**: Skip Design & Review. Dispatch 1 matching worker with a 7-field `BRIEF` + run quick PM verification. Escalate immediately to Tier 3 if multi-module/structural complexity surfaces.
+- **Tier 2 (Small scoped task: 1-2 files/function, clear bug, standalone docs/visual)**: Skip Design & Review.
+  - Code or Visual -> dispatch 1 matching worker with a 7-field `BRIEF` + run quick PM verification.
+  - Standalone Docs/Copy -> PM (`Gemini 4 Neon`) writes directly and applies the `im-not-ai` (`humanize-korean`) skill for Korean prose.
+  - Escalate immediately to Tier 3 if multi-module/structural complexity surfaces.
 - **Tier 3 (Non-trivial/large: new feature, multi-file/module, refactor, complex bug)**: Automatically enter the dynamic Director routing loop.
 
 ## 3. Dynamic Routing Rules (Evaluate After Every Step)
@@ -37,7 +40,7 @@ Hub-and-spoke control (Option A): main thread (`Gemini 4 Neon`, `thought_level: 
 3. **Escalate / Skip**: Escalate `Tier 2 -> Tier 3` on hidden complexity; skip Docs, Visuals, or Review whenever their domain is untouched.
 4. **Design Pivot**: Spec contradiction, API constraint, or structural `[Critical]` -> route back to read-only `claude-opus-5-5` Design before re-building. Never blind-patch.
 5. **Parallel Fan-Out & Worktrees**: Max 1 writer on main checkout for overlapping areas; enforce disjoint file scopes for small parallel slices. For large independent parallel features (e.g., API + UI), use `isolation: "worktree"` and integrate in dependency order. Keep <= 2-3 concurrent builders to prevent MCP/RAM bloat.
-6. **Post-Code Sync**: After code passes verification/review, dispatch `gemini-4-hydrogen` and/or visual workers if public APIs, CLI flags, configs, or UI flows changed.
+6. **Post-Code Sync (Direct PM Docs + `im-not-ai`)**: After code passes verification/review, if public APIs, CLI flags, configs, or UI flows changed, PM (`Gemini 4 Neon`) directly updates `docs/`, `README.md`, `CHANGELOG.md`, or UI copy — applying the `im-not-ai` (`humanize-korean`) skill to Korean deliverables (short natural sentences, no AI-isms/jargon/hype; changelog <= 3 lines: what changed + user impact) — and dispatches visual workers only if visual assets changed.
 7. **Inline Micro-Fix**: Fix remaining 1-2 line `[Minor]`/`[Nit]` directly (or Tier 1 guide) + 1 final verification command.
 
 ## 4. Mandatory 7-Field Handoff `BRIEF`
@@ -48,7 +51,6 @@ Children see ZERO parent history. Send every `delegate_task` in concise English 
 - **Architect/Scout**: Return file/function boundaries, risks, and executable verification commands.
 - **Builder**: Execute `DONE WHEN` command(s); report changed files, command outputs, and uncertainties.
 - **Playtester/Reviewer (`gpt-6.2-astra`)**: Read-only is a promise, not a lock — explicitly state `DO NOT edit/fix; report only`. Use adversarial red-team posture auditing **code AND test quality** (tests must genuinely catch regressions). Checklist: empty/null, huge/boundary, concurrency/race (two tabs/requests), slow/failing network/I/O, Unicode/Korean/non-ASCII, expired auth/missing perms, silent regressions, blueprint drift. Return numbered `[Critical|Major|Minor|Nit]` with `file:line`, `repro`, `expected`, `actual`, and fix criteria.
-- **Docs (`gemini-4-hydrogen`)**: Hard fence (`docs/`, `README.md`, `CHANGELOG.md`, designated UI/i18n ONLY). Write concise natural Korean (short sentences, no jargon/hype; changelog <= 3 lines: what changed + user impact); return English summary.
 
 ## 5. Safety Guardrails & Circuit Breakers
 
@@ -64,7 +66,7 @@ Children see ZERO parent history. Send every `delegate_task` in concise English 
 
 ## 6. Operations, Language & Overrides
 
-- **Language**: Internal prompts/blueprints/reports/reviews = strictly English; user replies & user-facing docs = natural Korean.
+- **Language & Docs Polish**: Internal prompts/blueprints/reports/reviews = strictly English; user replies & Korean user-facing docs = natural Korean. For Korean documentation/copy, load and follow the installed `im-not-ai` skill (`humanize-korean`; or `humanize-scan` for quick checks) before finalizing.
 - **Mechanics**: Call `orchestrator_capabilities` once per thread before first `delegate_task`; never silently swap unavailable models. Keep main context lean (offload heavy reads to read-only `claude-opus-5-5`). Never poll delegates (`task_status`, `sleep`, loops — follow `next`).
 - **Final Report**: Concise Korean + clickable file links + verbatim delegated thread links; suggest `/compact` or fresh thread after major milestones if long.
 - **Overrides**: Honor explicit per-thread user overrides (tier, path, cap, model, options) without editing this file unless asked.
