@@ -49,11 +49,11 @@ Instead of a rigid `Plan -> Build -> Review` waterfall, a lightweight central **
 
 ## Optional Companion Skill: `write-docs`
 
-[`skills/write-docs/SKILL.md`](./skills/write-docs/SKILL.md) is bundled as an **opt-in** skill decoupled from `my-orchestration`. It defines a 3-stage documentation pipeline (`Draft -> Format -> Polish`) for standalone or orchestrated docs tasks:
+[`skills/write-docs/SKILL.md`](./skills/write-docs/SKILL.md) is bundled as an **opt-in** skill decoupled from `my-orchestration`. It defines a safe documentation workflow (`Draft or Revise -> [Optional Polish] -> Format`) for standalone or orchestrated docs tasks:
 
-1. **Formal Korean Register & Drafting**: Defaults to formal declarative Korean suited for official documents, reports, technical manuals, and presentations (avoiding casual spoken phrasing and register drift), fact-based with zero hype, and `CHANGELOG.md` entries <= 3 lines.
-2. **Markdown Formatting (`make-md`)**: Uses an installed `make-md` skill (CommonMark 0.31.2) when available, with a built-in CommonMark fallback.
-3. **Korean Prose Polishing (`humanize-korean`)**: Optionally pairs with [`epoko77-ai/im-not-ai`](https://github.com/epoko77-ai/im-not-ai) (`humanize-korean` / `humanize-scan`) while locking formal register so AI translationese is removed without downgrading formal wording into casual speech.
+1. **Formal Korean Register, Precision & Revision Preservation**: Enforces formal vocabulary and endings (forbidding colloquialisms, anthropomorphism, and classroom metaphors in place of domain terms), introduces beginner concepts in `term -> 1-sentence definition -> real numeric/code example` order, caps bolding to key terms/values, and preserves existing headings/tone during revisions (flagging growth `>= 1.5x` pre-edit length).
+2. **Strict Opt-In Korean Polishing (`humanize-korean`)**: Never runs without an explicit user request (agents may suggest scanning if translationese is observed); when requested, pairs with [`epoko77-ai/im-not-ai`](https://github.com/epoko77-ai/im-not-ai) using `--genre report`, conservative intensity, and locked identifiers/numbers/headings.
+3. **Final Markdown Formatting (`make-md`, Always Last for Markdown)**: Applies an installed `make-md` skill (CommonMark 0.31.2) *after* the last prose edit on Markdown deliverables only (preserving native formats for JSON/i18n/presentations), with a built-in CommonMark fallback.
 
 ---
 
