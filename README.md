@@ -2,7 +2,7 @@
 
 A compact, zero-dependency **dynamic multi-model orchestration skill** for **T3 Code** and **Antigravity**.
 
-Instead of a rigid `Plan -> Build -> Review` waterfall, a lightweight central **Director/PM** classifies every incoming request across 4 tiers, dynamically routes engineering and visual work to specialized frontier models across providers, handles user-facing documentation directly, enforces command-verified handoffs and cross-family adversarial reviews, and halts cleanly at a hard **3-cycle circuit breaker**.
+Instead of a rigid `Plan -> Build -> Review` waterfall, a lightweight central **Director/PM** classifies every incoming request across 4 tiers, dynamically routes engineering and visual work to specialized frontier models across providers, handles user-facing documentation directly, enforces command-verified handoffs and independent cross-family reviews, and halts cleanly at a hard **3-cycle circuit breaker**.
 
 ---
 
@@ -26,9 +26,9 @@ Instead of a rigid `Plan -> Build -> Review` waterfall, a lightweight central **
 | **Architect / Scout** | `claudeAgent` | `claude-opus-5-5` | `{"effort": "xhigh"}` | Read-only scouting, architecture blueprints, mid-flight design pivots |
 | **Code Worker / Builder** | `claudeAgent` | `claude-opus-5-5` | `{"effort": "medium"}` | Tier 2 edits, Tier 3 parallel/worktree slices, failing-test-first fixes |
 | **Visual / Asset Designer** | Native / `codex` | `image-generator` / `gpt-6.2-sol` | `--` / `{"reasoningEffort": "medium"}` | Raster art/icons/banners (`image-generator`); charts/SVG/GIF scripts (`gpt-6.2-sol`) |
-| **Playtester / Senior Reviewer** | `codex` | `gpt-6.2-astra` | `{"reasoningEffort": "xhigh"}` | Read-only adversarial cross-provider playtesting & test-quality audit |
+| **Playtester / Senior Reviewer** | `codex` | `gpt-6.2-astra` | `{"reasoningEffort": "xhigh"}` | Read-only independent cross-provider playtesting & test-quality audit |
 
-> **Why cross-family review?** Same-family reviewers share the builder's blind spots. Keeping design & implementation on **Claude (`Opus 5.5`)** while delegating adversarial red-team review to **Codex (`GPT 6.2 Astra xhigh`)** — supervised neutrally by **Gemini (`Gemini 4 Neon`)** — prevents rubber-stamping and catches silent regressions before they land.
+> **Why cross-family review?** Same-family reviewers share the builder's blind spots. Keeping design & implementation on **Claude (`Opus 5.5`)** while delegating independent, evidence-based review to **Codex (`GPT 6.2 Astra xhigh`)** — supervised neutrally by **Gemini (`Gemini 4 Neon`)** — prevents rubber-stamping and catches silent regressions without inflating speculative nitpicks.
 
 ---
 
@@ -37,7 +37,7 @@ Instead of a rigid `Plan -> Build -> Review` waterfall, a lightweight central **
 - **Mandatory 7-Field Handoff `BRIEF`**: Every child delegate starts with zero parent history. All briefs specify `BRIEF FOR`, `ROLE`, `GOAL`, `CONTEXT`, `DONE WHEN` (an executable exit-0 command or objective checklist — never an opinion), `DO NOT`, and `RETURN`. See [`templates/BRIEF.md`](./templates/BRIEF.md).
 - **Direct PM Docs (Clean Separation of Concerns)**: The Director/PM (`Gemini 4 Neon`) owns user-facing documentation directly without spawning a separate copywriter model. Documentation rules live cleanly in the optional [`skills/write-docs/SKILL.md`](./skills/write-docs/SKILL.md) skill rather than being coupled into `my-orchestration`.
 - **Failing Test First**: When fixing testable bugs or `[Critical]`/`[Major]` review findings, builders write a failing regression test reproducing the issue *before* writing the fix.
-- **Adversarial Playtester Checklist**: `GPT 6.2 Astra` audits both **code and test quality** against empty/null inputs, huge boundaries, concurrency/race conditions, slow/failing I/O, Unicode/non-ASCII strings, auth/permission edge cases, and blueprint drift.
+- **Evidence-Based Playtester Checklist**: `GPT 6.2 Astra` audits both **code and test quality** against empty/null inputs, huge boundaries, concurrency/race conditions, slow/failing I/O, Unicode/non-ASCII strings, auth/permission edge cases, and blueprint drift — reporting only reproducible defects or concrete test gaps (or `No issues found` when clean).
 - **Hard Circuit Breakers**:
   - **Max 3 Error-Fix Cycles** (`1/3 Targeted Fix` -> `2/3 Root-Cause Pivot` -> `3/3 Final Controlled Attempt` -> **Hard Stop & Human Escalation**).
   - **Sensitive-File Lock**: `.env*`, DB `migrations`, and CI/deploy configs cannot be edited without explicit human approval.

@@ -40,12 +40,12 @@ RETURN:    English summary: files changed, exact verification command outputs, a
 ```text
 BRIEF FOR: codex / gpt-6.2-astra (reasoningEffort: xhigh)
 ROLE:      playtester / senior reviewer (read-only)
-GOAL:      Adversarially break this change and audit both implementation and test quality.
+GOAL:      Independently verify this change for real bugs, edge-case failures, and test-quality gaps.
 CONTEXT:   <task goal, blueprint summary, git diff or changed file list>
 DONE WHEN: Checked empty/null input, huge/boundary input, concurrency/race conditions, slow/failing
            network or I/O, Unicode/non-ASCII strings, expired auth/missing permissions, silent
            regressions, blueprint drift, and whether tests actually catch real regressions.
-DO NOT:    Edit or fix any files (report only), or spawn subagents.
+DO NOT:    Edit or fix any files (report only), inflate speculative nitpicks, or spawn subagents.
 RETURN:    English numbered list ranked [Critical|Major|Minor|Nit]; each item must include
            file:line, repro steps, expected, actual, and concrete fix criteria (or "No issues found").
 ```

@@ -7,7 +7,7 @@ description: >-
   handoffs (command-based DONE WHEN), failing-test-first fixes, sensitive-file locks,
   max 3 fix cycles, optional worktree isolation, direct PM documentation ownership, and
   the Dream Team roster (Gemini 4 Neon high PM & docs, Claude Opus 5.5 xhigh design / medium code,
-  image-generator/GPT 6.2 Sol medium visuals, GPT 6.2 Astra xhigh adversarial review).
+  image-generator/GPT 6.2 Sol medium visuals, GPT 6.2 Astra xhigh independent review).
 ---
 
 # My T3 Code Orchestration Preset (Dynamic Director-Driven)
@@ -20,7 +20,7 @@ Hub-and-spoke control (Option A): main thread (`Gemini 4 Neon`, `thought_level: 
 - **Architect/Scout** (read-only): `claudeAgent` / `claude-opus-5-5` / `{"effort":"xhigh"}` — codebase scouting, blueprints, design pivots.
 - **Builder/Code Worker**: `claudeAgent` / `claude-opus-5-5` / `{"effort":"medium"}` — Tier 2 edits, Tier 3 parallel/worktree slices, failing-test-first fixes.
 - **Visual/Asset**: native `invoke_subagent` (`image-generator`) for raster art/icons/banners; `codex` / `gpt-6.2-sol` / `{"reasoningEffort":"medium"}` for code-generated charts/diagrams/SVG/GIF scripts.
-- **Playtester/Senior Reviewer** (read-only): `codex` / `gpt-6.2-astra` / `{"reasoningEffort":"xhigh"}` — adversarial cross-provider playtesting, bug & test-quality review.
+- **Playtester/Senior Reviewer** (read-only): `codex` / `gpt-6.2-astra` / `{"reasoningEffort":"xhigh"}` — independent cross-provider playtesting, bug & test-quality review.
 
 ## 2. Entry Classification (4-Tier Auto-Routing)
 
@@ -49,7 +49,7 @@ Children see ZERO parent history. Send every `delegate_task` in concise English 
 
 - **Architect/Scout**: Return file/function boundaries, risks, and executable verification commands.
 - **Builder**: Execute `DONE WHEN` command(s); report changed files, command outputs, and uncertainties.
-- **Playtester/Reviewer (`gpt-6.2-astra`)**: Read-only is a promise, not a lock — explicitly state `DO NOT edit/fix; report only`. Use adversarial red-team posture auditing **code AND test quality** (tests must genuinely catch regressions). Checklist: empty/null, huge/boundary, concurrency/race (two tabs/requests), slow/failing network/I/O, Unicode/Korean/non-ASCII, expired auth/missing perms, silent regressions, blueprint drift. Return numbered `[Critical|Major|Minor|Nit]` with `file:line`, `repro`, `expected`, `actual`, and fix criteria.
+- **Playtester/Reviewer (`gpt-6.2-astra`)**: Read-only is a promise, not a lock — explicitly state `DO NOT edit/fix; report only`. Use an evidence-based review posture auditing **code AND test quality** (tests must genuinely catch regressions); report only reproducible defects or concrete test gaps, and return `No issues found` when clean. Checklist: empty/null, huge/boundary, concurrency/race (two tabs/requests), slow/failing network/I/O, Unicode/Korean/non-ASCII, expired auth/missing perms, silent regressions, blueprint drift. Return numbered `[Critical|Major|Minor|Nit]` with `file:line`, `repro`, `expected`, `actual`, and fix criteria.
 
 ## 5. Safety Guardrails & Circuit Breakers
 
