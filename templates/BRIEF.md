@@ -6,10 +6,10 @@ Child delegates in T3 Code start with **zero parent conversation history**. Use 
 
 ---
 
-## 1. Architect / Scout (`claudeAgent` / `claude-opus-5-5`, `effort: high`, read-only)
+## 1. Architect / Scout (`claudeAgent` / `claude-opus-5-5`, `effort: xhigh`, read-only)
 
 ```text
-BRIEF FOR: claudeAgent / claude-opus-5-5 (effort: high)
+BRIEF FOR: claudeAgent / claude-opus-5-5 (effort: xhigh)
 ROLE:      architect (read-only)
 GOAL:      Produce a concrete architecture and file/function-level blueprint for <feature/fix>.
 CONTEXT:   <user requirements, constraints, key entry files, prior findings>
@@ -21,10 +21,10 @@ RETURN:    Concise English blueprint with file boundaries, risks, and exact DONE
 
 ---
 
-## 2. Code Worker / Builder (`claudeAgent` / `claude-opus-5-5`, `effort: high`)
+## 2. Code Worker / Builder (`claudeAgent` / `claude-opus-5-5`, `effort: medium`)
 
 ```text
-BRIEF FOR: claudeAgent / claude-opus-5-5 (effort: high)
+BRIEF FOR: claudeAgent / claude-opus-5-5 (effort: medium)
 ROLE:      builder
 GOAL:      <one-sentence implementation or failing-test-first fix outcome>
 CONTEXT:   <blueprint excerpt, target files, failure logs or repro/expected/actual>

@@ -23,8 +23,8 @@ Instead of a rigid `Plan -> Build -> Review` waterfall, a lightweight central **
 | Role | Provider | Model | Options | Scope |
 | :--- | :--- | :--- | :--- | :--- |
 | **Director / PM & Docs** | Main thread (`antigravity`) | `Gemini 4 Neon` | `{"thought_level": "high"}` | Routing, 7-field briefs, verification, fix-cycle cap, reporting, and direct docs/copywriting (`docs/`, `README.md`, `CHANGELOG.md`, UI/i18n) |
-| **Architect / Scout** | `claudeAgent` | `claude-opus-5-5` | `{"effort": "high"}` | Read-only scouting, architecture blueprints, mid-flight design pivots |
-| **Code Worker / Builder** | `claudeAgent` | `claude-opus-5-5` | `{"effort": "high"}` | Tier 2 edits, Tier 3 parallel/worktree slices, failing-test-first fixes |
+| **Architect / Scout** | `claudeAgent` | `claude-opus-5-5` | `{"effort": "xhigh"}` | Read-only scouting, architecture blueprints, mid-flight design pivots |
+| **Code Worker / Builder** | `claudeAgent` | `claude-opus-5-5` | `{"effort": "medium"}` | Tier 2 edits, Tier 3 parallel/worktree slices, failing-test-first fixes |
 | **Visual / Asset Designer** | Native / `codex` | `image-generator` / `gpt-6.2-sol` | `--` / `{"reasoningEffort": "medium"}` | Raster art/icons/banners (`image-generator`); charts/SVG/GIF scripts (`gpt-6.2-sol`) |
 | **Playtester / Senior Reviewer** | `codex` | `gpt-6.2-astra` | `{"reasoningEffort": "xhigh"}` | Read-only adversarial cross-provider playtesting & test-quality audit |
 

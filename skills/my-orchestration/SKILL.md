@@ -6,7 +6,7 @@ description: >-
   requests. Enforces 4-tier auto-routing, dynamic Director-driven control, 7-field BRIEF
   handoffs (command-based DONE WHEN), failing-test-first fixes, sensitive-file locks,
   max 3 fix cycles, optional worktree isolation, direct PM documentation ownership, and
-  the Dream Team roster (Gemini 4 Neon high PM & docs, Claude Opus 5.5 high design/code,
+  the Dream Team roster (Gemini 4 Neon high PM & docs, Claude Opus 5.5 xhigh design / medium code,
   image-generator/GPT 6.2 Sol medium visuals, GPT 6.2 Astra xhigh adversarial review).
 ---
 
@@ -17,8 +17,8 @@ Hub-and-spoke control (Option A): main thread (`Gemini 4 Neon`, `thought_level: 
 ## 1. Roster (Exact IDs & Options)
 
 - **Director/PM & Docs** (main, direct): `Gemini 4 Neon` (`{"thought_level":"high"}`) — user Q&A, routing, 7-field briefs, verification, fix-cycle cap, reporting, and direct documentation/copywriting (`docs/`, `README.md`, `CHANGELOG.md`, UI/i18n).
-- **Architect/Scout** (read-only): `claudeAgent` / `claude-opus-5-5` / `{"effort":"high"}` — codebase scouting, blueprints, design pivots.
-- **Builder/Code Worker**: `claudeAgent` / `claude-opus-5-5` / `{"effort":"high"}` — Tier 2 edits, Tier 3 parallel/worktree slices, failing-test-first fixes.
+- **Architect/Scout** (read-only): `claudeAgent` / `claude-opus-5-5` / `{"effort":"xhigh"}` — codebase scouting, blueprints, design pivots.
+- **Builder/Code Worker**: `claudeAgent` / `claude-opus-5-5` / `{"effort":"medium"}` — Tier 2 edits, Tier 3 parallel/worktree slices, failing-test-first fixes.
 - **Visual/Asset**: native `invoke_subagent` (`image-generator`) for raster art/icons/banners; `codex` / `gpt-6.2-sol` / `{"reasoningEffort":"medium"}` for code-generated charts/diagrams/SVG/GIF scripts.
 - **Playtester/Senior Reviewer** (read-only): `codex` / `gpt-6.2-astra` / `{"reasoningEffort":"xhigh"}` — adversarial cross-provider playtesting, bug & test-quality review.
 
